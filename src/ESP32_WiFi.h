@@ -9,13 +9,13 @@ static const char *PASSWORD_1 = "4179Volframio";
 #define addressPASSWORD 50
 #define LED_STATE 2
 
-/*     VARIABLES GLOBALES     */
+/*      VARIABLES GLOBALES      */
 static String SSID_2;
 static String PASSWORD_2;
-
 
 /*     DECLARACION DE PROTOTIPOS DE FUNCION     */
 extern void WiFi_STA(void);
 extern void WiFi_AP(void);
+extern void LeerEEPROM(void);
 
 #endif /*_ESP32_WiFi_H_*/

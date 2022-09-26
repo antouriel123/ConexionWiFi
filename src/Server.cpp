@@ -10,6 +10,9 @@ AsyncWebServer servidor(80);
 
 void GuardarDatosWiFi(AsyncWebServerRequest *request)
 {
+  //Variables locales
+  String SSID_2;
+  String PASSWORD_2;
   //Escribimos un mensaje en el puerto serial comprobando que funciona la llamada de peticiones
   Serial.println("¡¡Peticion Recibida del navegador!!");
   
@@ -22,12 +25,7 @@ void GuardarDatosWiFi(AsyncWebServerRequest *request)
   //Ahora guardamos el dato de obtenido en el formulario en la memoria EEPROM
   EEPROM.writeString(addressSSID,SSID_2);
   EEPROM.writeString(addressPASSWORD,PASSWORD_2);
-  Serial.println("Datos de la red guardada!!");
-  SSID_2=EEPROM.readString(addressSSID);
-  PASSWORD_2=EEPROM.readString(addressPASSWORD);
-  //Iniciamos la conexion con la RED local 
-  Serial.println(SSID_2);
-  Serial.println(PASSWORD_2);
+  EEPROM.commit();
   //respondemos al cliente
   request->send(200,"text/plain","Guardado la clave de red!!");
   //Reiniciamos el ESP32 para ver si se guardaron los datos 

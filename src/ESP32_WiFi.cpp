@@ -5,27 +5,46 @@
 
 void WiFi_STA(void)
 {
-  //Sacamos la clave y el nombre del SSID de la memoria EEPROM
-  SSID_2=EEPROM.readString(addressSSID);
-  PASSWORD_2=EEPROM.readString(addressPASSWORD);
+  char SS[50];
+  char PW[50];
+  //LeerEEPROM();
+  SSID_2 = EEPROM.readString(addressSSID);
+  
+  PASSWORD_2 = EEPROM.readString(addressPASSWORD);
+
+  
+  //Establecemos el modo estacion y access point
+  WiFi.mode(WIFI_STA);
+  //Inicializamos la conexion con la red del ESP32
+  //WiFi.softAP(SSID_1,PASSWORD_1);
+  
+  SSID_2.toCharArray(SS,SSID_2.length());
+  PASSWORD_2.toCharArray(PW,PASSWORD_2.length());
+  Serial.println(SS);
+  Serial.println(PW);
   //Iniciamos la conexion con la RED local 
-  Serial.println(SSID_2);
-  Serial.println(PASSWORD_2);
-  WiFi.begin(SSID_2.c_str(),PASSWORD_2.c_str());
+  WiFi.begin(SS,PW);
   //ahora verificamos la conexion de la red
   while(WiFi.status()!=WL_CONNECTED)
   {
     delay(500);
     Serial.print(".");
   }
-    Serial.print("STA direccion IP:");
+  //Autoreconeccion
+  WiFi.setAutoReconnect(true);
+  //Escribimos en el puerto serial 
+  Serial.println("WiFi Conectado!!");
+  Serial.println();
+  WiFi.printDiag(Serial);
+  Serial.println();
+  Serial.print("STA direccion IP:");
   Serial.println(WiFi.localIP());
 }
 
 void WiFi_AP(void)
 {
   //Establecemos el modo estacion y access point
-  WiFi.mode(WIFI_AP_STA);
+  WiFi.mode(WIFI_AP);
   //Escribimos en el puerto serial 
   Serial.println("\nConfiguramos el WiFi access point");
   WiFi.softAP(SSID_1,PASSWORD_1);
@@ -36,4 +55,9 @@ void WiFi_AP(void)
   Serial.print("Contraseña: ");
   Serial.println(PASSWORD_1); 
   Serial.println(WiFi.softAPIP());
+}
+
+void LeerEEPROM(void)
+{
+  
 }
